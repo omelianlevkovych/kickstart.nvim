@@ -5,6 +5,7 @@
 -- Vertical line at 120 characters (line length guide)
 vim.opt.colorcolumn = '120'
 vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#3c3836' })
+vim.api.nvim_set_hl(0, 'Substitute', { fg = '#282828', bg = '#fabd2f' })
 
 -- Double-tab for fuzzy file search (from git root or cwd)
 vim.keymap.set('n', '<Tab><Tab>', function()
