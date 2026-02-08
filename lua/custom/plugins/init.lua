@@ -2,9 +2,9 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
--- Vertical line at 80 and 120 characters (line length guide)
-vim.opt.colorcolumn = '80,120'
-vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#2a2a2a' })
+-- Vertical line at 120 characters (line length guide)
+vim.opt.colorcolumn = '120'
+vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#3c3836' })
 
 -- Double-tab for fuzzy file search (from git root or cwd)
 vim.keymap.set('n', '<Tab><Tab>', function()
