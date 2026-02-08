@@ -19,6 +19,22 @@ end, { desc = 'Fuzzy find files (project root)' })
 
 return {
   {
+    'saecki/crates.nvim',
+    event = { 'BufRead Cargo.toml' },
+    opts = {
+      completion = {
+        cmp = { enabled = false },
+        crates = { enabled = true },
+      },
+      lsp = {
+        enabled = true,
+        actions = true,
+        completion = true,
+        hover = true,
+      },
+    },
+  },
+  {
     'iamcco/markdown-preview.nvim',
     build = 'cd app && npm install',
     ft = 'markdown',

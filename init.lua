@@ -679,7 +679,16 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        -- rust_analyzer = {},
+        rust_analyzer = {
+          cmd = { '/usr/bin/rust-analyzer' },
+          settings = {
+            ['rust-analyzer'] = {
+              check = {
+                command = 'clippy',
+              },
+            },
+          },
+        },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -719,7 +728,11 @@ require('lazy').setup({
       --
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
+      -- Exclude servers with explicit system cmd from Mason installation
+      local ensure_installed = vim.tbl_filter(function(name)
+        local srv = servers[name]
+        return not (srv and srv.cmd)
+      end, vim.tbl_keys(servers or {}))
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'bash-language-server',
@@ -743,6 +756,15 @@ require('lazy').setup({
           end,
         },
       }
+
+      -- Set up servers with explicit system cmd (not managed by Mason)
+      for name, config in pairs(servers) do
+        if config.cmd then
+          config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, config.capabilities or {})
+          vim.lsp.config(name, config)
+          vim.lsp.enable(name)
+        end
+      end
     end,
   },
 
@@ -780,6 +802,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         sh = { 'shfmt' },
         bash = { 'shfmt' },
+        rust = { 'rustfmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -957,6 +980,16 @@ require('lazy').setup({
       { '<leader>nf', '<cmd>NERDTreeFind<CR>', desc = 'NERDTree find current file' },
     },
     cmd = { 'NERDTree', 'NERDTreeToggle', 'NERDTreeFind' },
+    init = function()
+      vim.api.nvim_create_autocmd('BufEnter', {
+        pattern = '*',
+        callback = function()
+          if vim.fn.winnr '$' == 1 and vim.b.NERDTree and vim.b.NERDTree.isTabTree then
+            vim.cmd 'quit'
+          end
+        end,
+      })
+    end,
   },
 
   { -- Highlight, edit, and navigate code
@@ -972,6 +1005,7 @@ require('lazy').setup({
         ensure_installed = {
           'bash', 'c', 'diff', 'html', 'lua', 'luadoc',
           'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc',
+          'rust', 'toml',
         },
         auto_install = true,
         highlight = {
