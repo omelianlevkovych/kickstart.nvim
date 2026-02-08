@@ -878,6 +878,14 @@ require('lazy').setup({
 
       -- Shows a signature help window while you type arguments for a function
       signature = { enabled = true },
+
+      cmdline = {
+        enabled = true,
+        completion = {
+          menu = { auto_show = true },
+          ghost_text = { enabled = true },
+        },
+      },
     },
   },
 
