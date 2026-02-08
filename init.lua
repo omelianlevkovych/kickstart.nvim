@@ -725,6 +725,7 @@ require('lazy').setup({
         'bash-language-server',
         'shellcheck',
         'shfmt',
+        'markdownlint-cli2',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
