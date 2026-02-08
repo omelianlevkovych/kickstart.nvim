@@ -19,6 +19,44 @@ end, { desc = 'Fuzzy find files (project root)' })
 
 return {
   {
+    'itchyny/lightline.vim',
+    lazy = false,
+    config = function()
+      vim.o.showmode = false
+      vim.g.lightline = {
+        active = {
+          left = {
+            { 'mode', 'paste' },
+            { 'readonly', 'filename', 'modified' },
+          },
+          right = {
+            { 'lineinfo' },
+            { 'percent' },
+            { 'fileencoding', 'filetype' },
+          },
+        },
+        component_function = {
+          filename = 'LightlineFilename',
+        },
+      }
+      function LightlineFilenameInLua()
+        if vim.fn.expand('%:t') == '' then
+          return '[No Name]'
+        else
+          return vim.fn.getreg('%')
+        end
+      end
+      vim.api.nvim_exec2(
+        [[
+        function! g:LightlineFilename()
+            return v:lua.LightlineFilenameInLua()
+        endfunction
+        ]],
+        {}
+      )
+    end,
+  },
+  {
     'saecki/crates.nvim',
     event = { 'BufRead Cargo.toml' },
     opts = {

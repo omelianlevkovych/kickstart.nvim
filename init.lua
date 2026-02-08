@@ -924,12 +924,18 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'sainnhe/gruvbox-material',
+    'wincent/base16-nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
-      vim.g.gruvbox_material_background = 'hard'
-      vim.g.gruvbox_material_disable_italic_comment = 1
-      vim.cmd.colorscheme 'gruvbox-material'
+      vim.cmd([[colorscheme gruvbox-dark-hard]])
+      vim.o.background = 'dark'
+      vim.cmd([[hi Normal ctermbg=NONE]])
+      -- Make comments more prominent -- they are important.
+      local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
+      vim.api.nvim_set_hl(0, 'Comment', bools)
+      -- Make it clearly visible which argument we're at.
+      local marked = vim.api.nvim_get_hl(0, { name = 'PMenu' })
+      vim.api.nvim_set_hl(0, 'LspSignatureActiveParameter', { fg = marked.fg, bg = marked.bg, ctermfg = marked.ctermfg, ctermbg = marked.ctermbg, bold = true })
     end,
   },
 
@@ -953,21 +959,6 @@ require('lazy').setup({
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
-
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
-      -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
-
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
