@@ -980,6 +980,16 @@ require('lazy').setup({
           end
         end,
       })
+
+      -- Auto-refresh NERDTree when Neovim regains focus
+      vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
+        pattern = '*',
+        callback = function()
+          if vim.fn.exists('g:NERDTree') == 1 and vim.fn.eval('g:NERDTree.IsOpen()') == 1 then
+            vim.cmd 'NERDTreeRefreshRoot'
+          end
+        end,
+      })
     end,
   },
 
