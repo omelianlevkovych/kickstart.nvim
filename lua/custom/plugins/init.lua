@@ -4,6 +4,7 @@
 -- See the kickstart.nvim README for more information
 -- Vertical line at 120 characters (line length guide)
 vim.opt.colorcolumn = '120'
+vim.opt.relativenumber = true
 vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#3c3836' })
 vim.api.nvim_set_hl(0, 'Substitute', { fg = '#282828', bg = '#fabd2f' })
 
@@ -16,6 +17,9 @@ vim.keymap.set('n', '<Tab><Tab>', function()
     require('telescope.builtin').find_files()
   end
 end, { desc = 'Fuzzy find files (project root)' })
+
+-- Preserve <C-i> (jump forward) so the <Tab><Tab> mapping doesn't swallow it
+vim.keymap.set('n', '<C-i>', '<C-i>', { desc = 'Jump forward in jump list' })
 
 return {
   {
