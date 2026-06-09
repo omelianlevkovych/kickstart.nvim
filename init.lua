@@ -927,7 +927,7 @@ require('lazy').setup({
     'wincent/base16-nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
-      vim.cmd([[colorscheme gruvbox-dark-hard]])
+      vim.cmd([[colorscheme hiberbee]])
       vim.o.background = 'dark'
       vim.cmd([[hi Normal ctermbg=NONE]])
       -- Make comments more prominent -- they are important.
